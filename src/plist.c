@@ -47,7 +47,7 @@
 #include <ptrarray.h>
 
 #ifdef _MSC_VER
-typedef SSIZE_T ssize_t;
+typedef unsigned long long ssize_t;
 #endif
 
 #ifdef DEBUG
