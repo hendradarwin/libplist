@@ -49,12 +49,21 @@ set_target_properties(plist PROPERTIES
     PUBLIC_HEADER "${header_file_list}"
 )
 
+# install(
+#     TARGETS plist
+#     EXPORT plist_targets
+#     PUBLIC_HEADER DESTINATION "include/plist"
+#     RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+# )
+
+
 install(
     TARGETS plist
     EXPORT plist_targets
     PUBLIC_HEADER DESTINATION "include/plist"
-    RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+    RUNTIME DESTINATION "bin"
+    ARCHIVE DESTINATION "lib"
+    LIBRARY DESTINATION "lib"
 )
-
