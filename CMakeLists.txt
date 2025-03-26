@@ -14,11 +14,11 @@ FILE(GLOB_RECURSE libcnary_c_file_list ${PROJECT_SOURCE_DIR}/libcnary/*.c)
 # unused file, will make compile error
 list(REMOVE_ITEM libcnary_c_file_list ${CMAKE_CURRENT_SOURCE_DIR}/libcnary/cnary.c)
 
-
+if (WIN32)
 # C file contain c++ code, treat them as c++ code
-set_source_files_properties(${c_file_list} PROPERTIES LANGUAGE CXX)
-set_source_files_properties(${libcnary_c_file_list} PROPERTIES LANGUAGE CXX)
-
+    set_source_files_properties(${c_file_list} PROPERTIES LANGUAGE CXX)
+    set_source_files_properties(${libcnary_c_file_list} PROPERTIES LANGUAGE CXX)
+endif()
 
 list(APPEND libimobiledevice_source_files    
     ${c_file_list}
@@ -26,7 +26,7 @@ list(APPEND libimobiledevice_source_files
     ${libcnary_c_file_list}
 )
 
-add_library(plist SHARED ${libimobiledevice_source_files})
+add_library(plist STATIC ${libimobiledevice_source_files})
 
 target_include_directories(plist
     PUBLIC         
@@ -38,9 +38,12 @@ target_include_directories(plist
 
 target_compile_definitions(plist PUBLIC 
     PACKAGE_VERSION="2.6.0"
+    HAVE_STRNDUP
 )
 
-target_link_libraries(plist PUBLIC ole32 ws2_32 gdi32)
+if (WIN32)
+    target_link_libraries(plist PUBLIC ole32 ws2_32 gdi32)
+endif()
 
 set_target_properties(plist PROPERTIES 
     PUBLIC_HEADER "${header_file_list}"
