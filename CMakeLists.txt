@@ -28,6 +28,12 @@ list(APPEND libimobiledevice_source_files
 
 add_library(plist STATIC ${libimobiledevice_source_files})
 
+
+# if (WIN32)
+#     # add compile flag on windows to support C23 standard
+#     target_compile_options(plist PUBLIC "/Zc:__STDC__")
+# endif()
+
 target_include_directories(plist
     PUBLIC         
         include        
@@ -36,9 +42,21 @@ target_include_directories(plist
         ${CMAKE_SOURCE_DIR}          
 )
 
+set (compile_defs "") 
+
+if (APPLE)
+    list(APPEND compile_defs
+        HAVE_STRNDUP
+    )
+elseif(WIN32)
+    list(APPEND compile_defs
+        LIBPLIST_STATIC
+    )
+endif()
+
 target_compile_definitions(plist PUBLIC 
     PACKAGE_VERSION="2.6.0"
-    HAVE_STRNDUP
+    ${compile_defs}
 )
 
 if (WIN32)

@@ -7,7 +7,7 @@ from conan.tools.apple import fix_apple_shared_install_name
 
 class libplistConan(ConanFile):
     name = "libplist"
-    version = "2.6.0"
+    version = "2.6.1"
     package_type = "library"
 
     # Optional metadata
@@ -74,14 +74,15 @@ class libplistConan(ConanFile):
         self.cpp_info.set_property("pkg_config_name", "libplist")        
         
         self.cpp_info.libdirs = [lib_path]
-        
-        # if self.settings.os=="Windows":
-        #     self.cpp_info.libs = ["plist"]
-        # elif self.settings.os=="Macos":    
-        self.cpp_info.libs = ["libplist"]
-
         self.cpp_info.bindirs = [bin_path]
-        self.cpp_info.components["libplist"].libs = ["libplist.a"]
+       
+        if self.settings.os=="Windows":
+            self.cpp_info.libs = ["plist"]
+            self.cpp_info.components["libplist"].libs = ["plist.lib"]
+        elif self.settings.os=="Macos":    
+            self.cpp_info.libs = ["libplist"]
+            self.cpp_info.components["libplist"].libs = ["libplist.a"]
+
 
         fix_apple_shared_install_name(self)
 
