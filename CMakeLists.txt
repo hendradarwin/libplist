@@ -28,12 +28,6 @@ list(APPEND libimobiledevice_source_files
 
 add_library(plist STATIC ${libimobiledevice_source_files})
 
-
-# if (WIN32)
-#     # add compile flag on windows to support C23 standard
-#     target_compile_options(plist PUBLIC "/Zc:__STDC__")
-# endif()
-
 target_include_directories(plist
     PUBLIC         
         include        
@@ -44,7 +38,11 @@ target_include_directories(plist
 
 set (compile_defs "") 
 
-if (APPLE)
+if (UNIX)
+    list(APPEND compile_defs
+        HAVE_STRNDUP
+    )
+elseif (APPLE)
     list(APPEND compile_defs
         HAVE_STRNDUP
     )
@@ -66,16 +64,6 @@ endif()
 set_target_properties(plist PROPERTIES 
     PUBLIC_HEADER "${header_file_list}"
 )
-
-# install(
-#     TARGETS plist
-#     EXPORT plist_targets
-#     PUBLIC_HEADER DESTINATION "include/plist"
-#     RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-#     ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-#     LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Darwin>:macos>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-# )
-
 
 install(
     TARGETS plist

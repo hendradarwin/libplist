@@ -1,5 +1,0 @@
-include(smartbuild_common)
-
-[options]
-smartbuild:build_test=True
-smartbuild:build_test_cli=True

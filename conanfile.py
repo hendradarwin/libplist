@@ -7,7 +7,7 @@ from conan.tools.apple import fix_apple_shared_install_name
 
 class libplistConan(ConanFile):
     name = "libplist"
-    version = "2.6.1"
+    version = "2.6.0"
     package_type = "library"
 
     # Optional metadata
@@ -50,28 +50,14 @@ class libplistConan(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-    def package_info(self):                
-        platform_path = "windows"
-        if self.settings.os=="Linux":
-            platform_path = "linux"
-        elif self.settings.os=="Macos":    
-            platform_path = "macos"
-        
-        configuration_path = ""
-        if self.settings.build_type == "Debug":
-            configuration_path = "debug"
-        
-        custom_relative_path = join("x64", platform_path, configuration_path)
-
-        # lib_path = join("lib", custom_relative_path)
-        # bin_path = join("bin", custom_relative_path)        
+    def package_info(self):                    
         lib_path = "lib"
         bin_path = "bin"
 
-        self.cpp_info.set_property("cmake_file_name", "libplist")
-        self.cpp_info.set_property("cmake_target_name", "libplist::libplist")
-        self.cpp_info.set_property("cmake_find_mode", "both")
-        self.cpp_info.set_property("pkg_config_name", "libplist")        
+        # self.cpp_info.set_property("cmake_file_name", "libplist")
+        # self.cpp_info.set_property("cmake_target_name", "libplist::libplist")
+        # self.cpp_info.set_property("cmake_find_mode", "both")
+        # self.cpp_info.set_property("pkg_config_name", "libplist")        
         
         self.cpp_info.libdirs = [lib_path]
         self.cpp_info.bindirs = [bin_path]
@@ -79,7 +65,7 @@ class libplistConan(ConanFile):
         if self.settings.os=="Windows":
             self.cpp_info.libs = ["plist"]
             self.cpp_info.components["libplist"].libs = ["plist.lib"]
-        elif self.settings.os=="Macos":    
+        elif self.settings.os in ["Macos", "Linux"]:    
             self.cpp_info.libs = ["libplist"]
             self.cpp_info.components["libplist"].libs = ["libplist.a"]
 
