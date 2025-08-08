@@ -39,8 +39,12 @@
 
 #ifdef LIBPLIST_STATIC
   #define PLIST_API
-#elif defined(_WIN32)
-  #define PLIST_API __declspec( dllexport )
+#elif defined(_WIN32)  
+  #if defined PLIST_BUILD_SHARED_LIBRARY
+    #define PLIST_API __declspec(dllexport) 
+  #else 
+    #define PLIST_API __declspec(dllimport) 
+  #endif  
 #else
   #if __GNUC__ >= 4
     #define PLIST_API __attribute__((visibility("default")))
